@@ -18,6 +18,7 @@ namespace EBANX.Core.Services
             if (eventReqDto == null)
                 return new DepositDto<object> { ReturnType = Utilities.ReturnType.NotFound};
 
+            //initialise account
             var account = new Account
             {
                 Id = eventReqDto.Destination,
