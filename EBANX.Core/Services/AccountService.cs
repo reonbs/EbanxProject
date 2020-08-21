@@ -33,8 +33,8 @@ namespace EBANX.Core.Services
                         ReturnType = transfer.ReturnType,
                         Data = new
                         {
-                            origin = transfer.WithdrawData,
-                            destination = transfer.DepositData
+                            origin = transfer.WithdrawData?.Origin,
+                            destination = transfer.DepositData?.Destination
                         }
                     };
                 default:
@@ -153,8 +153,7 @@ namespace EBANX.Core.Services
             return new BalanceDto { ReturnType = Utilities.ReturnType.Ok, Balance = account.Balance };
         }
 
-
-        private TransferDto Transfer(EventReqDto eventReqDto)
+        private TransferDto Transfer2(EventReqDto eventReqDto)
         {
             if (eventReqDto == null)
                 return new TransferDto { ReturnType = Utilities.ReturnType.NotFound };
@@ -215,5 +214,21 @@ namespace EBANX.Core.Services
             }
         }
 
+        private TransferDto Transfer(EventReqDto eventReqDto)
+        {
+            var withdrwal = Withrawal(eventReqDto);
+
+            if (withdrwal.ReturnType == Utilities.ReturnType.NotFound)
+                return new TransferDto { ReturnType = withdrwal.ReturnType };
+
+            var deposit = CreateAccountOrDeposit(eventReqDto);
+
+            return new TransferDto
+            {
+                ReturnType = Utilities.ReturnType.Created,
+                WithdrawData = withdrwal.WithdrawData,
+                DepositData = deposit.DepositData
+            };
+        }
     }
 }
