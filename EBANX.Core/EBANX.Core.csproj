@@ -9,5 +9,7 @@
     <Folder Include="Services\" />
     <Folder Include="Interface\" />
     <Folder Include="Repository\" />
+    <Folder Include="Dtos\" />
+    <Folder Include="Utilities\" />
   </ItemGroup>
 </Project>
