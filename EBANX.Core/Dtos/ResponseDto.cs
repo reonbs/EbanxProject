@@ -20,6 +20,13 @@ namespace EBANX.Core.Dtos
 
     }
 
+    public class TransferDto : TransactionDto
+    {
+        public Data DepositData { get; set; }
+        public WithDrawData WithdrawData { get; set; }
+
+    }
+
     public class BalanceDto
     {
         public ReturnType ReturnType { get; set; }
