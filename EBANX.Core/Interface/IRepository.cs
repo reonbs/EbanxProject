@@ -9,5 +9,6 @@ namespace EBANX.Core.Interface
         Account Get(string id);
         bool Exist(string id);
         void Update(Account account);
+        void Clear();
     }
 }

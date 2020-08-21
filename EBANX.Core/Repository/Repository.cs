@@ -33,7 +33,12 @@ namespace EBANX.Core.Repository
         public void Update(Account account)
         {
             var _account = _dbContext.FirstOrDefault(x => x.Id == account.Id);
-            _account.Amount = account.Amount;
+            _account.Balance = account.Balance;
+        }
+
+        public void Clear()
+        {
+            _dbContext.Clear();
         }
     }
 }

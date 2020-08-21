@@ -1,7 +1,7 @@
 ﻿using System;
-namespace EBANX.Core.Models
+namespace EBANX.Core.Dtos
 {
-    public class Account
+    public class AccountDto
     {
         public string Id { get; set; }
         public decimal Balance { get; set; }
