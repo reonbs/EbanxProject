@@ -5,6 +5,6 @@ namespace EBANX.Core.Interface
 {
     public interface IAccountService
     {
-        DepositDto<object> CreateAccount(EventReqDto eventReqDto);
+        DepositDto<object> EventService(EventReqDto eventReqDto);
     }
 }

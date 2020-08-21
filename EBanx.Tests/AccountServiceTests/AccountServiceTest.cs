@@ -24,24 +24,47 @@ namespace EBanx.Tests.AccountServiceTests
         [Fact]
         public void CreateAccount_InvalidRequestValid_ReturnNotFound()
         {
-            var result = _accountService.CreateAccount(null);
+            var result = _accountService.EventService(null);
 
             Assert.Equal(ReturnType.NotFound,result.ReturnType);
         }
 
         [Fact]
-        public void CreateAccount_IsValidRequest_ReturnNotFound()
+        public void CreateAccountOrDeposit_CreateNewAccount_ReturnAccountCreated()
         {
             var eventReq = new EventReqDto
             {
+                Type = "deposit",
                 Amount = 10,
                 Destination = "100"
             };
 
-            var result = _accountService.CreateAccount(eventReq);
+            var result = _accountService.EventService(eventReq);
 
             Assert.Equal(ReturnType.Created, result.ReturnType);
             Assert.Equal(eventReq.Destination, result.data.Destination.Id);
+        }
+
+        [Fact]
+        public void CreateAccountOrDeposit_DepositToAccount_ReturnAccount()
+        {
+            var eventReq = new EventReqDto
+            {
+                Type = "deposit",
+                Amount = 10,
+                Destination = "100"
+            };
+
+            //create account
+            var accountCreation = _accountService.EventService(eventReq);
+
+            //deposit into account
+            var deposit = _accountService.EventService(eventReq);
+
+            Assert.Equal(ReturnType.Created, deposit.ReturnType);
+            Assert.Equal(eventReq.Destination, deposit.data.Destination.Id);
+            Assert.Equal(eventReq.Amount * 2, deposit.data.Destination.Balance);
+
         }
     }
 }

@@ -13,32 +13,74 @@ namespace EBANX.Core.Services
             _repository = repository;
         }
 
-        public DepositDto<object> CreateAccount(EventReqDto eventReqDto)
+        public DepositDto<object> EventService(EventReqDto eventReqDto)
+        {
+            if (eventReqDto == null)
+                return new DepositDto<object> { ReturnType = Utilities.ReturnType.NotFound };
+
+            switch (eventReqDto.Type)
+            {
+                case "deposit":
+                    return CreateAccountOrDeposit(eventReqDto);
+                default:
+                    return new DepositDto<object> { ReturnType = Utilities.ReturnType.NotFound };
+            }
+        }
+
+        private DepositDto<object> CreateAccountOrDeposit(EventReqDto eventReqDto)
         {
             if (eventReqDto == null)
                 return new DepositDto<object> { ReturnType = Utilities.ReturnType.NotFound};
 
-            //initialise account
-            var account = new Account
-            {
-                Id = eventReqDto.Destination,
-                Amount = eventReqDto.Amount
-            };
+            if (string.IsNullOrWhiteSpace(eventReqDto.Destination))
+                return new DepositDto<object> { ReturnType = Utilities.ReturnType.NotFound };
 
-            _repository.Add(account);
+            var account = _repository.Get(eventReqDto.Destination);
 
-            return new DepositDto<object>
+            if (account == null)
             {
-                ReturnType = Utilities.ReturnType.Created,
-                data = new Data {
-                     Destination = new AccountDto
-                     {
-                         Id = account.Id,
-                         Balance = account.Amount
-                     }
-                }
-            };
+                //initialise account
+                var _account = new Account
+                {
+                    Id = eventReqDto.Destination,
+                    Amount = eventReqDto.Amount
+                };
+
+                _repository.Add(_account);
+
+                return new DepositDto<object>
+                {
+                    ReturnType = Utilities.ReturnType.Created,
+                    data = new Data
+                    {
+                        Destination = new AccountDto
+                        {
+                            Id = _account.Id,
+                            Balance = _account.Amount
+                        }
+                    }
+                };
+            }
+            else
+            {
+                account.Amount += eventReqDto.Amount;
+
+                _repository.Update(account);
+
+                return new DepositDto<object>
+                {
+                    ReturnType = Utilities.ReturnType.Created,
+                    data = new Data
+                    {
+                        Destination = new AccountDto
+                        {
+                            Id = account.Id,
+                            Balance = account.Amount
+                        }
+                    }
+                };
+            }
         }
-        
+
     }
 }
