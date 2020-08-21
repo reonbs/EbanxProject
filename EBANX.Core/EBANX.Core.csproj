@@ -6,5 +6,8 @@
 
   <ItemGroup>
     <Folder Include="Models\" />
+    <Folder Include="Services\" />
+    <Folder Include="Interface\" />
+    <Folder Include="Repository\" />
   </ItemGroup>
 </Project>
