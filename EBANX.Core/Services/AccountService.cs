@@ -230,5 +230,10 @@ namespace EBANX.Core.Services
                 DepositData = deposit.DepositData
             };
         }
+
+        public void Reset()
+        {
+            _repository.Clear();
+        }
     }
 }

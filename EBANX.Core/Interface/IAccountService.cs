@@ -7,5 +7,6 @@ namespace EBANX.Core.Interface
     {
         TransactionDto EventService(EventReqDto eventReqDto);
         BalanceDto GetBalance(string accountId);
+        void Reset();
     }
 }

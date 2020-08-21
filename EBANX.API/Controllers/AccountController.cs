@@ -48,5 +48,13 @@ namespace EBANX.API.Controllers
                     return NotFound(0);
             }
         }
+
+        [HttpPost("reset")]
+        public IActionResult Reset()
+        {
+            _accountService.Reset();
+
+            return Ok();
+        }
     }
 }
