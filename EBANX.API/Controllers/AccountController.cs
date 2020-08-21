@@ -23,9 +23,9 @@ namespace EBANX.API.Controllers
             switch (account.ReturnType)
             {
                 case ReturnType.Created:
-                    return Created($"/event", account.data);
+                    return Created($"/event", account.Data);
                 case ReturnType.Ok:
-                    return Ok(account.data);
+                    return Ok(account.Data);
                 case ReturnType.NotFound:
                     return NotFound(0);
                 default:
@@ -33,13 +33,20 @@ namespace EBANX.API.Controllers
             }
         }
 
+        [HttpGet("balance")]
+        public IActionResult Get(string account_id)
+        {
+            var account = _accountService.GetBalance(account_id);
 
-
-        //[HttpGet("balance")]
-        //public IActionResult Get(string account_id)
-        //{
-        //    _accountService.GetAccount(account_id);
-        //    return Ok();
-        //}
+            switch (account.ReturnType)
+            {
+                case ReturnType.Ok:
+                    return Ok(account.Balance);
+                case ReturnType.NotFound:
+                    return NotFound(account.Balance);
+                default:
+                    return NotFound(0);
+            }
+        }
     }
 }

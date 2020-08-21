@@ -13,27 +13,31 @@ namespace EBANX.Core.Services
             _repository = repository;
         }
 
-        public DepositDto<object> EventService(EventReqDto eventReqDto)
+        public TransactionDto EventService(EventReqDto eventReqDto)
         {
             if (eventReqDto == null)
-                return new DepositDto<object> { ReturnType = Utilities.ReturnType.NotFound };
+                return new TransactionDto { ReturnType = Utilities.ReturnType.NotFound };
 
             switch (eventReqDto.Type)
             {
                 case "deposit":
-                    return CreateAccountOrDeposit(eventReqDto);
+                    var deposit = CreateAccountOrDeposit(eventReqDto);
+                    return new TransactionDto { ReturnType = deposit.ReturnType, Data = deposit.DepositData};
+                case "withdraw":
+                    var withdraw = Withrawal(eventReqDto);
+                    return new TransactionDto { ReturnType = withdraw.ReturnType, Data = withdraw.WithdrawData };
                 default:
-                    return new DepositDto<object> { ReturnType = Utilities.ReturnType.NotFound };
+                    return new TransactionDto{ ReturnType = Utilities.ReturnType.NotFound };
             }
         }
 
-        private DepositDto<object> CreateAccountOrDeposit(EventReqDto eventReqDto)
+        private DepositDto CreateAccountOrDeposit(EventReqDto eventReqDto)
         {
             if (eventReqDto == null)
-                return new DepositDto<object> { ReturnType = Utilities.ReturnType.NotFound};
+                return new DepositDto { ReturnType = Utilities.ReturnType.NotFound};
 
             if (string.IsNullOrWhiteSpace(eventReqDto.Destination))
-                return new DepositDto<object> { ReturnType = Utilities.ReturnType.NotFound };
+                return new DepositDto { ReturnType = Utilities.ReturnType.NotFound };
 
             var account = _repository.Get(eventReqDto.Destination);
 
@@ -43,43 +47,96 @@ namespace EBANX.Core.Services
                 var _account = new Account
                 {
                     Id = eventReqDto.Destination,
-                    Amount = eventReqDto.Amount
+                    Balance = eventReqDto.Amount
                 };
 
                 _repository.Add(_account);
 
-                return new DepositDto<object>
+                return new DepositDto
                 {
                     ReturnType = Utilities.ReturnType.Created,
-                    data = new Data
+                    DepositData = new Data
                     {
                         Destination = new AccountDto
                         {
                             Id = _account.Id,
-                            Balance = _account.Amount
+                            Balance = _account.Balance
                         }
                     }
                 };
             }
             else
             {
-                account.Amount += eventReqDto.Amount;
+                account.Balance += eventReqDto.Amount;
 
                 _repository.Update(account);
 
-                return new DepositDto<object>
+                return new DepositDto
                 {
                     ReturnType = Utilities.ReturnType.Created,
-                    data = new Data
+                    DepositData = new Data
                     {
                         Destination = new AccountDto
                         {
                             Id = account.Id,
-                            Balance = account.Amount
+                            Balance = account.Balance
                         }
                     }
                 };
             }
+        }
+
+        private WithdrwalDto Withrawal(EventReqDto eventReqDto)
+        {
+            if (eventReqDto == null)
+                return new WithdrwalDto{ ReturnType = Utilities.ReturnType.NotFound };
+
+            if (string.IsNullOrWhiteSpace(eventReqDto.Origin))
+                return new WithdrwalDto { ReturnType = Utilities.ReturnType.NotFound };
+
+            var account = _repository.Get(eventReqDto.Origin);
+
+            if (account == null)
+            {
+                return new WithdrwalDto
+                {
+                    ReturnType = Utilities.ReturnType.NotFound,
+                    WithdrawData = null
+                };
+            }
+            else
+            {
+                account.Balance -= eventReqDto.Amount;
+
+                _repository.Update(account);
+
+                return new WithdrwalDto
+                {
+                    ReturnType = Utilities.ReturnType.Created,
+                    WithdrawData = new WithDrawData
+                    {
+                        Origin = new AccountDto
+                        {
+                            Id = account.Id,
+                            Balance = account.Balance
+                        }
+                    }
+                };
+            }
+        }
+
+        public BalanceDto GetBalance(string accountId)
+        {
+            if (string.IsNullOrWhiteSpace(accountId))
+                return new BalanceDto { ReturnType = Utilities.ReturnType.NotFound, Balance = 0 };
+
+            var account = _repository.Get(accountId);
+
+            if (account == null)
+                return new BalanceDto{ ReturnType = Utilities.ReturnType.NotFound, Balance = 0 };
+
+
+            return new BalanceDto{ ReturnType = Utilities.ReturnType.Ok, Balance = account.Balance };
         }
 
     }

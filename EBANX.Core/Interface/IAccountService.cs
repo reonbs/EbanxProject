@@ -5,6 +5,7 @@ namespace EBANX.Core.Interface
 {
     public interface IAccountService
     {
-        DepositDto<object> EventService(EventReqDto eventReqDto);
+        TransactionDto EventService(EventReqDto eventReqDto);
+        BalanceDto GetBalance(string accountId);
     }
 }

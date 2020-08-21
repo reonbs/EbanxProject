@@ -42,7 +42,7 @@ namespace EBanx.Tests.AccountServiceTests
             var result = _accountService.EventService(eventReq);
 
             Assert.Equal(ReturnType.Created, result.ReturnType);
-            Assert.Equal(eventReq.Destination, result.data.Destination.Id);
+            Assert.Equal(eventReq.Destination, result.Data.Destination.Id);
         }
 
         [Fact]
@@ -62,8 +62,8 @@ namespace EBanx.Tests.AccountServiceTests
             var deposit = _accountService.EventService(eventReq);
 
             Assert.Equal(ReturnType.Created, deposit.ReturnType);
-            Assert.Equal(eventReq.Destination, deposit.data.Destination.Id);
-            Assert.Equal(eventReq.Amount * 2, deposit.data.Destination.Balance);
+            Assert.Equal(eventReq.Destination, deposit.Data.Destination.Id);
+            Assert.Equal(eventReq.Amount * 2, deposit.Data.Destination.Balance);
 
         }
     }
