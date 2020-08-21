@@ -1,0 +1,29 @@
+
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 15
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EBANX.API", "EBANX.API\EBANX.API.csproj", "{140AA3EB-8A03-4324-A627-1A2AD3C930B7}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EBANX.Core", "EBANX.Core\EBANX.Core.csproj", "{2A71F728-0337-411A-8C75-B995DFA7BE76}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EBanx.Tests", "EBanx.Tests\EBanx.Tests.csproj", "{066D7B4E-230B-4769-8418-B98B131FB183}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{140AA3EB-8A03-4324-A627-1A2AD3C930B7}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{140AA3EB-8A03-4324-A627-1A2AD3C930B7}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{140AA3EB-8A03-4324-A627-1A2AD3C930B7}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{140AA3EB-8A03-4324-A627-1A2AD3C930B7}.Release|Any CPU.Build.0 = Release|Any CPU
+		{2A71F728-0337-411A-8C75-B995DFA7BE76}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{2A71F728-0337-411A-8C75-B995DFA7BE76}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{2A71F728-0337-411A-8C75-B995DFA7BE76}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{2A71F728-0337-411A-8C75-B995DFA7BE76}.Release|Any CPU.Build.0 = Release|Any CPU
+		{066D7B4E-230B-4769-8418-B98B131FB183}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{066D7B4E-230B-4769-8418-B98B131FB183}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{066D7B4E-230B-4769-8418-B98B131FB183}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{066D7B4E-230B-4769-8418-B98B131FB183}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+EndGlobal
